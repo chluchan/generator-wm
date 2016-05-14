@@ -11,10 +11,13 @@ module.exports = yeoman.Base.extend({
     ));
 
     var prompts = [{
-      type: 'confirm',
-      name: 'someAnswer',
-      message: 'Would you like to enable this option?',
-      default: true
+      type: 'list',
+      name: 'packageManager',
+      message: 'How would you like to manage your dependencies?',
+      choices: [
+        { name: 'Node', value: 'node', checked: true },
+        { name: 'Bower', value: 'bower' }
+      ]
     }];
 
     return this.prompt(prompts).then(function (props) {
@@ -24,23 +27,34 @@ module.exports = yeoman.Base.extend({
   },
 
   writing: function () {
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('package.json'),
-      this.destinationPath('package.json')
+      this.destinationPath('package.json'),
+      this.props
     );
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('gulpfile.js'),
-      this.destinationPath('gulpfile.js')
+      this.destinationPath('gulpfile.js'),
+      this.props
     );
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('src/index.html'),
-      this.destinationPath('src/index.html')
+      this.destinationPath('src/index.html'),
+      this.props
     );
+
+    if (this.props.packageManager == 'bower') {
+      this.fs.copyTpl(
+        this.templatePath('bower.json'),
+        this.destinationPath('bower.json'),
+        this.props
+      );
+    }
   },
 
   install: function () {
-    this.installDependencies();
+    this.installDependencies({ npm: true, bower: this.props.packageManager == 'bower' });
   }
 });

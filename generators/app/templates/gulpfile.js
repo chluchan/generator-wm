@@ -1,7 +1,7 @@
 var gulp = require('gulp');
     webserver = require('gulp-webserver');
 
-var dependenciesLocation = 'node_modules';
+var dependenciesLocation = <% if (packageManager == 'node') { %>'node_modules'<% } else { %>'bower_components'<% } %>;
 var bootstrapLocation = dependenciesLocation + '/bootstrap/dist';
 
 // run init tasks
