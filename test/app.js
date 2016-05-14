@@ -11,8 +11,14 @@ describe('generator-wm:app', function () {
   });
 
   it('generates a package.json', function () {
-    assert.file([
-      'package.json'
-    ]);
+    assert.file(['package.json']);
+  });
+
+  it('generates a build file', function() {
+    assert.file(['gulpfile.js']);
+  });
+
+  it('generates a src/app/html file', function() {
+    assert.file(['src/app/index.html']);
   });
 });

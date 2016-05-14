@@ -28,6 +28,16 @@ module.exports = yeoman.Base.extend({
       this.templatePath('package.json'),
       this.destinationPath('package.json')
     );
+
+    this.fs.copy(
+      this.templatePath('gulpfile.js'),
+      this.destinationPath('gulpfile.js')
+    );
+
+    this.fs.copy(
+      this.templatePath('src/index.html'),
+      this.destinationPath('src/index.html')
+    );
   },
 
   install: function () {

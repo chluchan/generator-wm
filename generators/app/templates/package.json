@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "engines": {
+    "node": ">=4"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-webserver": "0.9.1",
+    "bootstrap": "^3.3.6",
+    "jquery": "2.2.3"
+  }
+}
