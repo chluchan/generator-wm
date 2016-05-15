@@ -16,8 +16,8 @@ module.exports = yeoman.Base.extend({
         name: 'packageManager',
         message: 'How would you like to manage your dependencies?',
         choices: [
-          { name: 'Node', value: 'node', checked: true },
-          { name: 'Bower', value: 'bower' }
+          {name: 'Node', value: 'node', checked: true},
+          {name: 'Bower', value: 'bower'}
         ]
       },
       {
@@ -25,8 +25,8 @@ module.exports = yeoman.Base.extend({
         name: 'reloader',
         message: 'Which browser reloader would you like to use during development?',
         choices: [
-          { name: 'Browser-Sync', value: 'browsersync', checked: true },
-          { name: 'Livereload', value: 'livereload' }
+          {name: 'Browser-Sync', value: 'browsersync', checked: true},
+          {name: 'Livereload', value: 'livereload'}
         ]
       }
     ];
@@ -51,12 +51,12 @@ module.exports = yeoman.Base.extend({
     writeWithProps('gulpfile.js');
     writeWithProps('src/index.html');
 
-    if (this.props.packageManager == 'bower') {
+    if (this.props.packageManager === 'bower') {
       writeWithProps('bower.json');
     }
   },
 
   install: function () {
-    this.installDependencies({ npm: true, bower: this.props.packageManager == 'bower' });
+    this.installDependencies({npm: true, bower: this.props.packageManager === 'bower'});
   }
 });

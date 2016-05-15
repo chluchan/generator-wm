@@ -5,13 +5,13 @@ var helpers = require('yeoman-test');
 
 describe('generator-wm:app', function () {
   describe('node support', function () {
-    before(function() {
+    before(function () {
       return helpers.run(path.join(__dirname, '../generators/app'))
         .withPrompts({packageManager: 'node'})
         .toPromise();
     });
 
-    it('uses node_modules for dependency management', function() {
+    it('uses node_modules for dependency management', function () {
       assert.fileContent('./gulpfile.js', /var dependenciesLocation = 'node_modules';/);
       assert.fileContent('./package.json', /"bootstrap":/);
       assert.fileContent('./package.json', /"jquery":/);
@@ -20,13 +20,13 @@ describe('generator-wm:app', function () {
   });
 
   describe('bower support', function () {
-    before(function() {
+    before(function () {
       return helpers.run(path.join(__dirname, '../generators/app'))
         .withPrompts({packageManager: 'bower'})
         .toPromise();
     });
 
-    it('uses bower_components for dependency management', function() {
+    it('uses bower_components for dependency management', function () {
       assert.fileContent('./gulpfile.js', /var dependenciesLocation = 'bower_components';/);
       assert.fileContent('./bower.json', /"bootstrap":/);
       assert.fileContent('./bower.json', /"jquery":/);
@@ -35,14 +35,14 @@ describe('generator-wm:app', function () {
     });
   });
 
-  describe('browser-sync support', function() {
-    before(function() {
+  describe('browser-sync support', function () {
+    before(function () {
       return helpers.run(path.join(__dirname, '../generators/app'))
         .withPrompts({reloader: 'browsersync'})
         .toPromise();
     });
 
-    it('uses browser sync for reloading', function() {
+    it('uses browser sync for reloading', function () {
       assert.fileContent('./gulpfile.js', /browserSync = require\('browser-sync'\)\.create()/);
       assert.fileContent('./gulpfile.js', /browserSync\.init/);
       assert.fileContent('./gulpfile.js', /browserSync\.reload/);
@@ -51,14 +51,14 @@ describe('generator-wm:app', function () {
     });
   });
 
-  describe('livereload support', function() {
-    before(function() {
+  describe('livereload support', function () {
+    before(function () {
       return helpers.run(path.join(__dirname, '../generators/app'))
         .withPrompts({reloader: 'livereload'})
         .toPromise();
     });
 
-    it('uses browser sync for reloading', function() {
+    it('uses browser sync for reloading', function () {
       assert.fileContent('./gulpfile.js', /server = require\('gulp-server-livereload'\)/);
       assert.fileContent('./gulpfile.js', /gulp\.src\('build'\)\.pipe\(server\({/);
       assert.fileContent('./package.json', /"gulp-server-livereload":/);
@@ -71,13 +71,13 @@ describe('generator-wm:app', function () {
     });
   });
 
-  describe('default setup', function() {
-    before(function() {
+  describe('default setup', function () {
+    before(function () {
       return helpers.run(path.join(__dirname, '../generators/app'))
         .toPromise();
     });
 
-    it('generates a web app', function() {
+    it('generates a web app', function () {
       assert.file(['package.json']);
       assert.file(['src/index.html']);
       assert.file(['gulpfile.js']);
