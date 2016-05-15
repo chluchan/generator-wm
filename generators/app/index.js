@@ -10,15 +10,26 @@ module.exports = yeoman.Base.extend({
       'Welcome to the stellar ' + chalk.red('generator-wm') + ' generator!'
     ));
 
-    var prompts = [{
-      type: 'list',
-      name: 'packageManager',
-      message: 'How would you like to manage your dependencies?',
-      choices: [
-        { name: 'Node', value: 'node', checked: true },
-        { name: 'Bower', value: 'bower' }
-      ]
-    }];
+    var prompts = [
+      {
+        type: 'list',
+        name: 'packageManager',
+        message: 'How would you like to manage your dependencies?',
+        choices: [
+          { name: 'Node', value: 'node', checked: true },
+          { name: 'Bower', value: 'bower' }
+        ]
+      },
+      {
+        type: 'list',
+        name: 'reloader',
+        message: 'Which browser reloader would you like to use during development?',
+        choices: [
+          { name: 'Browser-Sync', value: 'browsersync', checked: true },
+          { name: 'Livereload', value: 'livereload' }
+        ]
+      }
+    ];
 
     return this.prompt(prompts).then(function (props) {
       // To access props later use this.props.someAnswer;

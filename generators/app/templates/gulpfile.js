@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
     webserver = require('gulp-webserver'),
-    browserSync = require('browser-sync').create(),
+    <% if (reloader == 'browsersync') { %>browserSync = require('browser-sync').create(),<% } else { %>server = require('gulp-server-livereload'),<% } %>
     sass = require('gulp-sass');
 
 
@@ -47,20 +47,24 @@ gulp.task('html', function () {
 gulp.task('sass', function() {
     return gulp.src("src/**/*.scss")
         .pipe(sass())
-        .pipe(gulp.dest("build/app.css"))
-        .pipe(browserSync.stream());
+        .pipe(gulp.dest("build/app.css"))<% if (reloader == 'browsersync') { %>
+        .pipe(browserSync.stream());<% } else { %>;<% } %>
 });
 
 
 // Static Server + watching scss/html files
-gulp.task('serve', ['build'], function() {
-
-    browserSync.init({
-        server: "./build"
-    });
-
-    gulp.watch("src/**/*.scss", ['sass']);
-    gulp.watch("src/**/*.js", ['js']);
-    gulp.watch("src/**/*.html", ['html'])
-    gulp.watch("build/**/*").on('change', browserSync.reload);
+gulp.task('serve', ['build'], function() { <% if (reloader == 'browsersync') { %>
+  browserSync.init({
+      server: "./build"
+  });
+  <% } %>
+  gulp.watch("src/**/*.scss", ['sass']);
+  gulp.watch("src/**/*.js", ['js']);
+  gulp.watch("src/**/*.html", ['html']);
+  <% if (reloader == 'browsersync') { %>gulp.watch("build/**/*").on('change', browserSync.reload);<% } else { %>
+  gulp.src('build').pipe(server({
+    livereload: true,
+    directoryListing: false,
+    open: true
+  }));<% } %>
 });

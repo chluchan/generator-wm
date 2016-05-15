@@ -45,6 +45,29 @@ describe('generator-wm:app', function () {
     it('uses browser sync for reloading', function() {
       assert.fileContent('./gulpfile.js', /browserSync = require\('browser-sync'\)\.create()/);
       assert.fileContent('./gulpfile.js', /browserSync\.init/);
+      assert.fileContent('./gulpfile.js', /browserSync\.reload/);
+      assert.fileContent('./gulpfile.js', /browserSync\.stream\(\)/);
+      assert.fileContent('./package.json', /"browser-sync":/);
+    });
+  });
+
+  describe('livereload support', function() {
+    before(function() {
+      return helpers.run(path.join(__dirname, '../generators/app'))
+        .withPrompts({reloader: 'livereload'})
+        .toPromise();
+    });
+
+    it('uses browser sync for reloading', function() {
+      assert.fileContent('./gulpfile.js', /server = require\('gulp-server-livereload'\)/);
+      assert.fileContent('./gulpfile.js', /gulp\.src\('build'\)\.pipe\(server\({/);
+      assert.fileContent('./package.json', /"gulp-server-livereload":/);
+
+      assert.noFileContent('./gulpfile.js', /browserSync = require\('browser-sync'\)\.create()/);
+      assert.noFileContent('./gulpfile.js', /browserSync\.init/);
+      assert.noFileContent('./gulpfile.js', /browserSync\.reload/);
+      assert.noFileContent('./gulpfile.js', /browserSync\.stream\(\)/);
+      assert.noFileContent('./package.json', /"browser-sync":/);
     });
   });
 
