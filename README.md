@@ -1,5 +1,5 @@
 # generator-wm [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url] [![Coverage percentage][coveralls-image]][coveralls-url]
-> Web Machine, or wm for short, is a flexible generator for building webapps with a varienty of modern technology options.
+> Web Mix, or wm for short, is a flexible generator for building webapps with a varienty of modern technology options.
 
 ## Installation
 
