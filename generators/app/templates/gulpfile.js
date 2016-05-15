@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     webserver = require('gulp-webserver'),
     <% if (reloader == 'browsersync') { %>browserSync = require('browser-sync').create(),<% } else { %>server = require('gulp-server-livereload'),<% } %>
+    concat = require('gulp-concat'),
     sass = require('gulp-sass');
 
 
@@ -47,6 +48,7 @@ gulp.task('html', function () {
 gulp.task('sass', function() {
     return gulp.src("src/**/*.scss")
         .pipe(sass())
+        .pipe(concat('style.css'))
         .pipe(gulp.dest("build/app.css"))<% if (reloader == 'browsersync') { %>
         .pipe(browserSync.stream());<% } else { %>;<% } %>
 });
