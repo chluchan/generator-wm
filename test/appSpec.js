@@ -3,12 +3,19 @@ var path = require('path');
 var assert = require('yeoman-assert');
 var helpers = require('yeoman-test');
 
+function invoke(f) {
+  return function () {
+    f();
+  };
+}
+
 describe('generator-wm:app', function () {
   describe('node support', function () {
-    before(function () {
+    before(function (done) {
       return helpers.run(path.join(__dirname, '../generators/app'))
         .withPrompts({packageManager: 'node'})
-        .toPromise();
+        .toPromise()
+        .then(invoke(done));
     });
 
     it('uses node_modules for dependency management', function () {
@@ -20,10 +27,11 @@ describe('generator-wm:app', function () {
   });
 
   describe('bower support', function () {
-    before(function () {
+    before(function (done) {
       return helpers.run(path.join(__dirname, '../generators/app'))
         .withPrompts({packageManager: 'bower'})
-        .toPromise();
+        .toPromise()
+        .then(invoke(done));
     });
 
     it('uses bower_components for dependency management', function () {
@@ -36,10 +44,11 @@ describe('generator-wm:app', function () {
   });
 
   describe('browser-sync support', function () {
-    before(function () {
+    before(function (done) {
       return helpers.run(path.join(__dirname, '../generators/app'))
         .withPrompts({reloader: 'browsersync'})
-        .toPromise();
+        .toPromise()
+        .then(invoke(done));
     });
 
     it('uses browser sync for reloading', function () {
@@ -52,10 +61,11 @@ describe('generator-wm:app', function () {
   });
 
   describe('livereload support', function () {
-    before(function () {
+    before(function (done) {
       return helpers.run(path.join(__dirname, '../generators/app'))
         .withPrompts({reloader: 'livereload'})
-        .toPromise();
+        .toPromise()
+        .then(invoke(done));
     });
 
     it('uses browser sync for reloading', function () {
@@ -72,9 +82,10 @@ describe('generator-wm:app', function () {
   });
 
   describe('default setup', function () {
-    before(function () {
+    before(function (done) {
       return helpers.run(path.join(__dirname, '../generators/app'))
-        .toPromise();
+        .toPromise()
+        .then(invoke(done));
     });
 
     it('generates a web app', function () {
