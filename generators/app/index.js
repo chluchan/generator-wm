@@ -27,30 +27,21 @@ module.exports = yeoman.Base.extend({
   },
 
   writing: function () {
-    this.fs.copyTpl(
-      this.templatePath('package.json'),
-      this.destinationPath('package.json'),
-      this.props
-    );
+    var self = this;
+    function writeWithProps(path) {
+      self.fs.copyTpl(
+        self.templatePath(path),
+        self.destinationPath(path),
+        self.props
+      );
+    }
 
-    this.fs.copyTpl(
-      this.templatePath('gulpfile.js'),
-      this.destinationPath('gulpfile.js'),
-      this.props
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('src/index.html'),
-      this.destinationPath('src/index.html'),
-      this.props
-    );
+    writeWithProps('package.json');
+    writeWithProps('gulpfile.js');
+    writeWithProps('src/index.html');
 
     if (this.props.packageManager == 'bower') {
-      this.fs.copyTpl(
-        this.templatePath('bower.json'),
-        this.destinationPath('bower.json'),
-        this.props
-      );
+      writeWithProps('bower.json');
     }
   },
 

@@ -16,7 +16,7 @@ describe('generator-wm:app', function () {
       assert.fileContent('./package.json', /"bootstrap":/);
       assert.fileContent('./package.json', /"jquery":/);
       assert.noFile(['bower.json']);
-    })
+    });
   });
 
   describe('bower support', function () {
@@ -32,7 +32,20 @@ describe('generator-wm:app', function () {
       assert.fileContent('./bower.json', /"jquery":/);
       assert.noFileContent('./package.json', /"bootstrap":/);
       assert.noFileContent('./package.json', /"jquery":/);
-    })
+    });
+  });
+
+  describe('browser-sync support', function() {
+    before(function() {
+      return helpers.run(path.join(__dirname, '../generators/app'))
+        .withPrompts({reloader: 'browsersync'})
+        .toPromise();
+    });
+
+    it('uses browser sync for reloading', function() {
+      assert.fileContent('./gulpfile.js', /browserSync = require\('browser-sync'\)\.create()/);
+      assert.fileContent('./gulpfile.js', /browserSync\.init/);
+    });
   });
 
   describe('default setup', function() {

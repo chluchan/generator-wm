@@ -1,11 +1,14 @@
-var gulp = require('gulp');
-    webserver = require('gulp-webserver');
+var gulp = require('gulp'),
+    webserver = require('gulp-webserver'),
+    browserSync = require('browser-sync').create(),
+    sass = require('gulp-sass');
+
 
 var dependenciesLocation = <% if (packageManager == 'node') { %>'node_modules'<% } else { %>'bower_components'<% } %>;
 var bootstrapLocation = dependenciesLocation + '/bootstrap/dist';
 
 // run init tasks
-gulp.task('build', ['dependencies', 'dependencies-fonts', 'js', 'html', 'css']);
+gulp.task('build', ['dependencies', 'dependencies-fonts', 'js', 'html', 'sass']);
 gulp.task('default', ['build']);
 
 gulp.task('dependencies', function () {
@@ -40,16 +43,24 @@ gulp.task('html', function () {
     .pipe(gulp.dest('build'))
 });
 
-// move css
-gulp.task('css', function () {
-  return gulp.src('src/**/*.css')
-    .pipe(gulp.dest('build'))
+// Compile sass into CSS & auto-inject into browsers
+gulp.task('sass', function() {
+    return gulp.src("src/**/*.scss")
+        .pipe(sass())
+        .pipe(gulp.dest("build/app.css"))
+        .pipe(browserSync.stream());
 });
 
-// serve the build dir
-gulp.task('serve', function () {
-  gulp.src('build')
-    .pipe(webserver({
-      open: true
-    }));
+
+// Static Server + watching scss/html files
+gulp.task('serve', ['build'], function() {
+
+    browserSync.init({
+        server: "./build"
+    });
+
+    gulp.watch("src/**/*.scss", ['sass']);
+    gulp.watch("src/**/*.js", ['js']);
+    gulp.watch("src/**/*.html", ['html'])
+    gulp.watch("build/**/*").on('change', browserSync.reload);
 });
