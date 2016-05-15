@@ -7,7 +7,7 @@ module.exports = yeoman.Base.extend({
   prompting: function () {
     // Have Yeoman greet the user.
     this.log(yosay(
-      '\'Allo \'allo! Welcome to the ' + chalk.cyan('Web Machine') + '!'
+      '\'Allo \'allo! Welcome to ' + chalk.cyan('Web Mix') + '!'
     ));
 
     var prompts = [
@@ -50,6 +50,8 @@ module.exports = yeoman.Base.extend({
     writeWithProps('package.json');
     writeWithProps('gulpfile.js');
     writeWithProps('src/index.html');
+    writeWithProps('.editorconfig');
+    writeWithProps('.gitignore');
 
     if (this.props.packageManager === 'bower') {
       writeWithProps('bower.json');

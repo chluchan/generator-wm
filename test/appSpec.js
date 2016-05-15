@@ -92,6 +92,8 @@ describe('generator-wm:app', function () {
       assert.file(['package.json']);
       assert.file(['src/index.html']);
       assert.file(['gulpfile.js']);
+      assert.file(['.editorconfig']);
+      assert.file(['.gitignore']);
     });
   });
 });
