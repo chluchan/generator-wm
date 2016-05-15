@@ -1,7 +1,7 @@
 {
   "name": "generator-wm",
   "version": "0.0.0",
-  "description": "A flexible generator for building webapps with a varienty of modern technology options.",
+  "description": "Web Machine is a flexible generator for building webapps with a varienty of modern technology options.",
   "homepage": "https://github.com/chluchan/generator-wm",
   "author": {
     "name": "Chris Hluchan",
