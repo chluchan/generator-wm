@@ -50,6 +50,8 @@ module.exports = yeoman.Base.extend({
     writeWithProps('package.json');
     writeWithProps('gulpfile.js');
     writeWithProps('src/index.html');
+    writeWithProps('src/app.scss');
+    writeWithProps('src/_theme.scss');
     writeWithProps('.editorconfig');
     writeWithProps('.gitignore');
 

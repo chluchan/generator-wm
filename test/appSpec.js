@@ -91,6 +91,8 @@ describe('generator-wm:app', function () {
     it('generates a web app', function () {
       assert.file(['package.json']);
       assert.file(['src/index.html']);
+      assert.file(['src/app.scss']);
+      assert.file(['src/_theme.scss']);
       assert.file(['gulpfile.js']);
       assert.file(['.editorconfig']);
       assert.file(['.gitignore']);

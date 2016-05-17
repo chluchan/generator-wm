@@ -3,6 +3,8 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.6",
+    "bootstrap-sass": "^3.3.6",
+    "bootstrap-material-design": "^0.5.9",
     "jquery": "2.2.3"
   }
 }

@@ -4,7 +4,6 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     sass = require('gulp-sass');
 
-
 var dependenciesLocation = <% if (packageManager == 'node') { %>'node_modules'<% } else { %>'bower_components'<% } %>;
 var bootstrapLocation = dependenciesLocation + '/bootstrap/dist';
 
@@ -45,17 +44,22 @@ gulp.task('html', function () {
 });
 
 // Compile sass into CSS & auto-inject into browsers
-gulp.task('sass', function() {
+gulp.task('sass', function () {
     return gulp.src("src/**/*.scss")
-        .pipe(sass())
+        .pipe(sass({
+          style: 'compressed',
+          includePaths: [
+            dependenciesLocation + '/bootstrap-sass/assets/stylesheets',
+            dependenciesLocation + '/bootstrap-material-design/sass'
+          ]
+        }))
         .pipe(concat('style.css'))
-        .pipe(gulp.dest("build/app.css"))<% if (reloader == 'browsersync') { %>
+        .pipe(gulp.dest("build"))<% if (reloader == 'browsersync') { %>
         .pipe(browserSync.stream());<% } else { %>;<% } %>
 });
 
-
 // Static Server + watching scss/html files
-gulp.task('serve', ['build'], function() { <% if (reloader == 'browsersync') { %>
+gulp.task('serve', ['build'], function () { <% if (reloader == 'browsersync') { %>
   browserSync.init({
       server: "./build"
   });
