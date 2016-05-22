@@ -1,14 +1,14 @@
 var gulp = require('gulp'),
     webserver = require('gulp-webserver'),
-    <% if (reloader == 'browsersync') { %>browserSync = require('browser-sync').create(),<% } else { %>server = require('gulp-server-livereload'),<% } %>
+    <% if (reloader === 'browsersync') { %>browserSync = require('browser-sync').create(),<% } else { %>server = require('gulp-server-livereload'),<% } %>
     concat = require('gulp-concat'),
-    sass = require('gulp-sass');
+    <% if (styles === 'sass') { %>sass = require('gulp-sass')<% } else { %>less = require('gulp-less')<% } %>;
 
 var dependenciesLocation = <% if (packageManager == 'node') { %>'node_modules'<% } else { %>'bower_components'<% } %>;
 var bootstrapLocation = dependenciesLocation + '/bootstrap/dist';
 
 // run init tasks
-gulp.task('build', ['dependencies', 'dependencies-fonts', 'js', 'html', 'sass']);
+gulp.task('build', ['dependencies', 'dependencies-fonts', 'js', 'html', 'styles']);
 gulp.task('default', ['build']);
 
 gulp.task('dependencies', function () {
@@ -43,8 +43,9 @@ gulp.task('html', function () {
     .pipe(gulp.dest('build'))
 });
 
+<% if (styles === 'sass') { %>
 // Compile sass into CSS & auto-inject into browsers
-gulp.task('sass', function () {
+gulp.task('styles', function () {
     return gulp.src("src/**/*.scss")
         .pipe(sass({
           style: 'compressed',
@@ -57,6 +58,21 @@ gulp.task('sass', function () {
         .pipe(gulp.dest("build"))<% if (reloader == 'browsersync') { %>
         .pipe(browserSync.stream());<% } else { %>;<% } %>
 });
+<% } else { %>
+// Compile less into CSS & auto-inject into browsers
+gulp.task('styles', function () {
+  return gulp.src('./src/**/*.less')
+    .pipe(less({
+      paths: [
+        dependenciesLocation + '/bootstrap/less',
+        dependenciesLocation + '/bootstrap-material-design/less'
+      ]
+    }))
+    .pipe(concat('style.css'))
+    .pipe(gulp.dest('build'))<% if (reloader == 'browsersync') { %>
+    .pipe(browserSync.stream());<% } else { %>;<% } %>
+});
+<% } %>
 
 // Static Server + watching scss/html files
 gulp.task('serve', ['build'], function () { <% if (reloader == 'browsersync') { %>
@@ -64,7 +80,7 @@ gulp.task('serve', ['build'], function () { <% if (reloader == 'browsersync') { 
       server: "./build"
   });
   <% } %>
-  gulp.watch("src/**/*.scss", ['sass']);
+  <% if (styles === 'sass') { %>gulp.watch("src/**/*.scss", ['sass']); <% } %>
   gulp.watch("src/**/*.js", ['js']);
   gulp.watch("src/**/*.html", ['html']);
   <% if (reloader == 'browsersync') { %>gulp.watch("build/**/*").on('change', browserSync.reload);<% } else { %>

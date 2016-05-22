@@ -46,7 +46,7 @@ describe('generator-wm:app', function () {
   describe('browser-sync support', function () {
     before(function (done) {
       return helpers.run(path.join(__dirname, '../generators/app'))
-        .withPrompts({reloader: 'browsersync'})
+        .withPrompts({reloader: 'browsersync', styles: 'sass'})
         .toPromise()
         .then(invoke(done));
     });
@@ -81,6 +81,47 @@ describe('generator-wm:app', function () {
     });
   });
 
+  describe('sass support', function () {
+    before(function (done) {
+      return helpers.run(path.join(__dirname, '../generators/app'))
+        .withPrompts({packageManager: 'node', styles: 'sass'})
+        .toPromise()
+        .then(invoke(done));
+    });
+
+    it('compiles sass into css', function () {
+      assert.fileContent('./gulpfile.js', /pipe\(sass\({/);
+      assert.fileContent('./package.json', /"gulp-sass":/);
+      assert.fileContent('./package.json', /"bootstrap-sass":/);
+
+      assert.file(['src/app.scss']);
+      assert.file(['src/_theme.scss']);
+    });
+  });
+
+  describe('less support', function () {
+    before(function (done) {
+      return helpers.run(path.join(__dirname, '../generators/app'))
+        .withPrompts({packageManager: 'node', styles: 'less'})
+        .toPromise()
+        .then(invoke(done));
+    });
+
+    it('compiles less into css', function () {
+      assert.noFileContent('./gulpfile.js', /sass = require\('gulp-sass'\)/);
+      assert.noFileContent('./gulpfile.js', /gulp.task\('sass'/);
+      assert.noFileContent('./package.json', /"gulp-sass":/);
+      assert.noFileContent('./package.json', /"bootstrap-sass":/);
+
+      assert.fileContent('./gulpfile.js', /less = require\('gulp-less'\)/);
+      assert.fileContent('./gulpfile.js', /.pipe\(less\({/);
+      assert.fileContent('./package.json', /"gulp-less":/);
+
+      assert.file(['src/app.less']);
+      assert.file(['src/theme.less']);
+    });
+  });
+
   describe('default setup', function () {
     before(function (done) {
       return helpers.run(path.join(__dirname, '../generators/app'))
@@ -91,8 +132,6 @@ describe('generator-wm:app', function () {
     it('generates a web app', function () {
       assert.file(['package.json']);
       assert.file(['src/index.html']);
-      assert.file(['src/app.scss']);
-      assert.file(['src/_theme.scss']);
       assert.file(['gulpfile.js']);
       assert.file(['.editorconfig']);
       assert.file(['.gitignore']);

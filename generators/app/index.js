@@ -28,6 +28,15 @@ module.exports = yeoman.Base.extend({
           {name: 'Browser-Sync', value: 'browsersync', checked: true},
           {name: 'Livereload', value: 'livereload'}
         ]
+      },
+      {
+        type: 'list',
+        name: 'styles',
+        message: 'Which css preprocessor would you like to use?',
+        choices: [
+          {name: 'Sass', value: 'sass', checked: true},
+          {name: 'Less', value: 'less'}
+        ]
       }
     ];
 
@@ -50,10 +59,16 @@ module.exports = yeoman.Base.extend({
     writeWithProps('package.json');
     writeWithProps('gulpfile.js');
     writeWithProps('src/index.html');
-    writeWithProps('src/app.scss');
-    writeWithProps('src/_theme.scss');
     writeWithProps('.editorconfig');
     writeWithProps('.gitignore');
+
+    if (this.props.styles === 'sass') {
+      writeWithProps('src/app.scss');
+      writeWithProps('src/_theme.scss');
+    } else {
+      writeWithProps('src/app.less');
+      writeWithProps('src/theme.less');
+    }
 
     if (this.props.packageManager === 'bower') {
       writeWithProps('bower.json');
